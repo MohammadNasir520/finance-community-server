@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 const port = process.env.PORT || 5000;
 require('dotenv').config()
@@ -25,8 +25,9 @@ async function run() {
     try {
         const studentsCollection = client.db('financeCommunity').collection('students')
 
-        // student post 
 
+        // ------------------------------students--------------------------------
+        // student post 
         app.post('/students', async (req, res) => {
             const students = req.body;
             console.log(students)
@@ -35,6 +36,31 @@ async function run() {
 
         })
 
+        // get all students by batch
+        app.get('/students', async (req, res) => {
+            // let query = {};
+            const batch = req.query.batch;
+            console.log(batch);
+            if (batch) {
+                query = {
+                    batch: batch
+                }
+            }
+            const result = await studentsCollection.find(query).toArray()
+            res.send(result);
+        })
+
+
+        // get a single student by id
+        app.get('/studentProfile/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id);
+            const query = {
+                _id: ObjectId(id)
+            }
+            const result = await studentsCollection.findOne(query)
+            res.send(result)
+        })
 
     }
     finally {
