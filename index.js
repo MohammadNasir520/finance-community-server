@@ -36,7 +36,7 @@ async function run() {
 
         })
 
-        // get all students by batch
+        // get  students by batch 
         app.get('/students', async (req, res) => {
             // let query = {};
             const batch = req.query.batch;
@@ -60,6 +60,35 @@ async function run() {
             }
             const result = await studentsCollection.findOne(query)
             res.send(result)
+        })
+
+        // get student by email
+        app.get('/student/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log(email);
+            const query = {
+                email: email
+            }
+            const result = await studentsCollection.findOne(query)
+            res.send(result)
+        })
+
+        // registration request and update a student Information
+        app.put('/student/:email', async (req, res) => {
+            const student = req.body
+            const email = req.params.email;
+            console.log(student, email);
+            const query = {
+
+                email: email
+            }
+            const options = { upsert: true }
+            const updateDoc = {
+                $set: student
+            }
+            const result = await studentsCollection.updateOne(query, updateDoc, options)
+            res.send(result);
+
         })
 
     }
