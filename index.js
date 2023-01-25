@@ -38,7 +38,7 @@ async function run() {
 
         // get  students by batch 
         app.get('/students', async (req, res) => {
-            // let query = {};
+            let query = {};
             const batch = req.query.batch;
             console.log(batch);
             if (batch) {
@@ -73,7 +73,7 @@ async function run() {
             res.send(result)
         })
 
-        // registration request and update a student Information
+        // registration request and update a student Information-------------------------------
         app.put('/student/:email', async (req, res) => {
             const student = req.body
             const email = req.params.email;
@@ -90,6 +90,8 @@ async function run() {
             res.send(result);
 
         })
+
+
 
     }
     finally {
