@@ -51,7 +51,7 @@ async function run() {
         })
 
 
-        // get a single student by id
+        // get a single student by idd
         app.get('/studentProfile/:id', async (req, res) => {
             const id = req.params.id
             console.log(id);
@@ -70,6 +70,17 @@ async function run() {
                 email: email
             }
             const result = await studentsCollection.findOne(query)
+            res.send(result)
+        })
+
+        // delete user by Id
+        app.delete('/student/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = {
+                _id: ObjectId(id)
+            }
+            const result = await studentsCollection.deleteOne(query)
             res.send(result)
         })
 
